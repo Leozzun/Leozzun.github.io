@@ -33,26 +33,27 @@ function renderProducts(data, container) {
   과일 출력
 */
 function filterAndSortFruits() {
+  let re;
   //과일 데이터를 검색어로 필터링
   if (searchBox.value === "") {
     re = fruits;
   } else {
-    let re = fruits.filter((fruits) => fruits.name.includes(searchBox.value));
+    re = fruits.filter((fruits) => fruits.name.includes(searchBox.value));
     console.log(re);
   }
 
   // 선택에 따른 정렬
   if (sortSelect.value === "name") {
     //이름순
-    let re = fruits.toSorted();
+    re = re.toSorted((a, b) => a.name.localeCompare(b.name));
     console.log(re);
   } else if (sortSelect.value === "low") {
     //낮은 가격순
-    let re = fruits.toSorted((a, b) => a.price - b.price);
+    re = re.toSorted((a, b) => a.price - b.price);
     console.log(re);
   } else if (sortSelect.value === "high") {
     //높은 가격순
-    let re = fruits.toSorted((a, b) => b.price - a.price);
+    re = re.toSorted((a, b) => b.price - a.price);
     console.log(re);
   }
 
