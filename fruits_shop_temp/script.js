@@ -64,6 +64,7 @@ function filterAndSortFruits() {
 
 // 채소 출력 (3개씩 증가)
 function loadVeggies() {
+  const start = veggiePage * 3;
   //화면에 다시 출력
   //renderProducts(?, ?);
   renderProducts(veggies, veggieList);
