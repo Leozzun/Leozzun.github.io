@@ -226,7 +226,7 @@
       .hero-subtitle {
         font-size: 19px;
         color: var(--apple-gray);
-        margin-top: 40px;
+        margin-top: 20px;
         line-height: 1.6;
         font-weight: 500;
       }
@@ -588,11 +588,63 @@
           </div>
         </div>
         `,
-          // [1] Gallery (gallery_page.dart의 PageView 구조 재현용 빈 페이지)
-          `<div style="padding:100px; text-align:center;">
-          <h2 style="font-size:32px; font-weight:800; margin-bottom:10px;">Gallery Page</h2>
-          <p style="color:var(--apple-gray);">준비 중인 프로젝트 갤러리입니다.</p>
-        </div>`,
+          // [1] Gallery (프로젝트 리스트 레이아웃)
+          `
+<div class="profile-page-wrapper">
+  <div class="hero-container animate" style="animation-delay: 0.1s">
+    <span class="portfolio-label">PROJECT GALLERY</span>
+    <p class="hero-subtitle">HTML, CSS, JS를 활용하여 구현한<br>프론트엔드 작업물을 확인해보세요.</p>
+  </div>
+
+  <div class="project-list animate" style="animation-delay: 0.3s; display: flex; flex-direction: column; gap: 40px;">
+    
+    <div class="glass-card" style="display: flex; gap: 30px; align-items: center; padding: 40px; cursor: pointer;" onclick="window.location.href='./fruits_shop_temp/index.html'">
+      <div style="flex: 1;">
+        <div class="header">
+          <div class="icon-circle" style="background: rgba(255, 45, 85, 0.1); color: #FF2D55;">🍎</div>
+          <span style="color: #FF2D55;">Web Application</span>
+        </div>
+        <h2 style="font-size: 32px; font-weight: 800; margin-bottom: 15px;">My Fruits Shop</h2>
+        <p style="color: var(--apple-gray); line-height: 1.6; margin-bottom: 25px;">
+          신선한 과일을 테마로 한 쇼핑몰 UI입니다.<br>
+          반응형 레이아웃과 깔끔한 그리드 시스템을 학습하며 제작하였습니다.
+        </p>
+        <div class="chip-container">
+          <span class="chip">HTML5</span>
+          <span class="chip">CSS3</span>
+          <span class="chip">Responsive</span>
+        </div>
+      </div>
+      <div style="width: 200px; height: 150px; background: linear-gradient(135deg, #FF9500, #FF2D55); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 50px; box-shadow: 0 10px 20px rgba(255,45,85,0.2);">
+        🍓
+      </div>
+    </div>
+
+    <div class="glass-card" style="display: flex; gap: 30px; align-items: center; padding: 40px; cursor: pointer;" onclick="window.location.href='./Todo_List/TodoList_UI.html'">
+      <div style="flex: 1;">
+        <div class="header">
+          <div class="icon-circle" style="background: rgba(88, 86, 214, 0.1); color: #5856D6;">✅</div>
+          <span style="color: #5856D6;">Utility Tool</span>
+        </div>
+        <h2 style="font-size: 32px; font-weight: 800; margin-bottom: 15px;">Todo List UI</h2>
+        <p style="color: var(--apple-gray); line-height: 1.6; margin-bottom: 25px;">
+          할 일을 효율적으로 관리할 수 있는 투두리스트입니다.<br>
+          DOM 조작과 로컬 스토리지를 활용한 데이터 관리를 목표로 하였습니다.
+        </p>
+        <div class="chip-container">
+          <span class="chip">JavaScript</span>
+          <span class="chip">Local Storage</span>
+          <span class="chip">Interactive UI</span>
+        </div>
+      </div>
+      <div style="width: 200px; height: 150px; background: linear-gradient(135deg, #5856D6, #007AFF); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 50px; box-shadow: 0 10px 20px rgba(0,122,255,0.2);">
+        📝
+      </div>
+    </div>
+
+  </div>
+</div>
+`,
           // [2] Dev Story
           `<div style="padding:100px; text-align:center;">
           <h2 style="font-size:32px; font-weight:800; margin-bottom:10px;">Dev Story</h2>
