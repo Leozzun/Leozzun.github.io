@@ -1,12 +1,611 @@
 <!doctype html>
-<html>
+<html lang="ko">
   <head>
-    <title>My Page</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hong Jun-hwa Portfolio</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* 1. 기본 스타일 및 변수 (플러터 테마 반영) */
+      :root {
+        --primary-blue: #007aff;
+        --apple-black: #1d1d1f;
+        --apple-gray: #86868b;
+        --glass-bg: rgba(255, 255, 255, 0.7);
+        --glass-border: rgba(255, 255, 255, 0.6);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+      body {
+        background-color: #cacaca;
+        height: 100vh;
+        overflow: hidden;
+        color: var(--apple-black);
+      }
+
+      /* 2. Aurora Background (main.dart의 _BlurBlob 재현) */
+      .background-container {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background: #f5f5f7;
+      }
+      .blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        animation: move 12s infinite alternate ease-in-out;
+      }
+      .blob-blue {
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(
+          circle,
+          rgba(0, 122, 255, 0.3) 0%,
+          transparent 70%
+        );
+        top: -150px;
+        left: -150px;
+      }
+      .blob-purple {
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(
+          circle,
+          rgba(88, 86, 214, 0.3) 0%,
+          transparent 70%
+        );
+        bottom: -100px;
+        right: -50px;
+        animation-delay: -2s;
+      }
+      .blob-pink {
+        width: 450px;
+        height: 450px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 45, 85, 0.2) 0%,
+          transparent 70%
+        );
+        top: 30%;
+        right: 15%;
+        animation-delay: -4s;
+      }
+      @keyframes move {
+        from {
+          transform: translate(0, 0);
+        }
+        to {
+          transform: translate(60px, 40px);
+        }
+      }
+
+      /* 3. 메인 레이아웃 (Sidebar + Content) */
+      .main-layout {
+        display: flex;
+        padding: 25px;
+        height: 100vh;
+        gap: 25px;
+        max-width: 1600px;
+        margin: 0 auto;
+      }
+
+      .sidebar {
+        width: 280px;
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: 35px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 50px 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      }
+
+      .profile-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .profile-avatar {
+        width: 90px;
+        height: 90px;
+        background: linear-gradient(135deg, #00c6ff, #0072ff);
+        border-radius: 50%;
+        padding: 3px;
+        margin-bottom: 20px;
+      }
+      .avatar-inner {
+        width: 100%;
+        height: 100%;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 45px;
+      }
+
+      .menu-list {
+        width: 100%;
+        margin-top: 30px;
+        flex-grow: 1;
+      }
+      .menu-item {
+        display: flex;
+        align-items: center;
+        padding: 16px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-bottom: 10px;
+        color: #444;
+      }
+      .menu-item.active {
+        background: #1d1d1f;
+        color: white;
+        transform: scale(1.02);
+      }
+      .menu-item:not(.active):hover {
+        background: rgba(255, 255, 255, 0.5);
+      }
+      .menu-text {
+        margin-left: 15px;
+        display: flex;
+        flex-direction: column;
+      }
+      .menu-text .title {
+        font-size: 15px;
+        font-weight: 700;
+      }
+      .menu-text .sub {
+        font-size: 11px;
+        opacity: 0.6;
+      }
+
+      .content-area {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(15px);
+        border-radius: 35px;
+        overflow-y: auto;
+        border: 1px solid var(--glass-border);
+        scrollbar-width: none; /* Firefox */
+      }
+      .content-area::-webkit-scrollbar {
+        display: none;
+      } /* Chrome/Safari */
+
+      /* 4. Profile Page 전용 정밀 스타일 (플러터 수치 기반) */
+      .profile-page-wrapper {
+        padding: 40px 50px;
+      }
+
+      /* Hero Section (Stack 재현) */
+      .hero-container {
+        margin-bottom: 60px;
+        position: relative;
+      }
+      .portfolio-label {
+        color: var(--primary-blue);
+        font-weight: 800;
+        font-size: 14px;
+        letter-spacing: 1.5px;
+        display: block;
+        margin-bottom: 12px;
+      }
+      .title-stack {
+        position: relative;
+        height: 130px;
+      }
+      .hero-title {
+        font-size: 56px;
+        font-weight: 800;
+        line-height: 1.15;
+        letter-spacing: -1.8px;
+        position: absolute;
+      }
+      .hero-title.shadow {
+        color: rgba(0, 0, 0, 0.05);
+        transform: translateY(4px);
+      } /* Offset(0, 4) */
+      .hero-title.main {
+        color: var(--apple-black);
+      }
+      .hero-subtitle {
+        font-size: 19px;
+        color: var(--apple-gray);
+        margin-top: 40px;
+        line-height: 1.6;
+        font-weight: 500;
+      }
+
+      /* Bento Grid System */
+      .flex-row {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+      .flex-1 {
+        flex: 1;
+      }
+      .glass-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(25px);
+        border-radius: 30px;
+        border: 1px solid var(--glass-border);
+        padding: 32px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04);
+        transition: transform 0.3s ease;
+      }
+      .glass-card:hover {
+        transform: translateY(-5px);
+      }
+
+      /* Card Header (SectionHeader 재현) */
+      .header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+      }
+      .icon-circle {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        font-size: 16px;
+      }
+      .header span {
+        font-weight: 700;
+        font-size: 16px;
+      }
+
+      /* Info Items */
+      .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      .info-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .info-item .icon {
+        font-size: 20px;
+        color: var(--apple-gray);
+      }
+      .info-item .label {
+        font-size: 11px;
+        color: var(--apple-gray);
+        display: block;
+      }
+      .info-item .value {
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      /* Timeline (Education) */
+      .timeline-item {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 12px;
+      }
+      .t-line {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        background: var(--primary-blue);
+        border-radius: 50%;
+      }
+      .line {
+        width: 1px;
+        flex: 1;
+        background: #e5e5e7;
+        margin: 4px 0;
+      }
+      .t-content .date {
+        font-size: 12px;
+        color: var(--primary-blue);
+        font-weight: 700;
+      }
+      .t-content h4 {
+        font-size: 15px;
+        font-weight: 700;
+        margin: 2px 0;
+      }
+      .t-content p {
+        font-size: 13px;
+        color: var(--apple-gray);
+      }
+
+      /* GitHub & Certification */
+      .dark-card {
+        background: #1c1c1e;
+        color: white;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .dark-card h3 {
+        font-size: 24px;
+        font-weight: 800;
+      }
+      .chip-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .chip {
+        padding: 8px 14px;
+        background: rgba(0, 122, 255, 0.08);
+        border-radius: 10px;
+        color: var(--primary-blue);
+        font-size: 13px;
+        font-weight: 600;
+        border: 1px solid rgba(0, 122, 255, 0.2);
+      }
+
+      /* Tech Skills (TechGroup 재현) */
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+        margin-top: 20px;
+      }
+      .skill-group h4 {
+        font-size: 16px;
+        font-weight: 800;
+        color: var(--apple-gray);
+        margin-bottom: 15px;
+      }
+      .skill-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+        font-size: 15px;
+        font-weight: 500;
+      }
+      .check-icon {
+        color: var(--primary-blue);
+        font-size: 14px;
+        font-weight: 900;
+      }
+
+      /* 애니메이션 (SpringFadeIn 재현) */
+      @keyframes springUp {
+        0% {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate {
+        opacity: 0;
+        animation: springUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      }
+    </style>
   </head>
   <body>
-    <h1>내 GitHub Page</h1>
+    <div class="background-container">
+      <div class="blob blob-blue"></div>
+      <div class="blob blob-purple"></div>
+      <div class="blob blob-pink"></div>
+    </div>
 
-    <a href="./fruits_shop_temp/index.html">my fruits Shop</a><br />
-    <a href="./Todo_List/TodoList_UI.html">TodoList</a><br />
+    <main class="main-layout">
+      <aside class="sidebar">
+        <div class="profile-section">
+          <div class="profile-avatar"><div class="avatar-inner">👤</div></div>
+          <h2 style="font-size: 22px; font-weight: 800">Hong Jun-hwa</h2>
+          <p style="color: var(--apple-gray); font-size: 14px; margin-top: 5px">
+            Backend Developer
+          </p>
+        </div>
+
+        <nav class="menu-list">
+          <div class="menu-item active" onclick="changePage(0)">
+            <span style="font-size: 20px">👤</span>
+            <div class="menu-text">
+              <span class="title">About Me</span
+              ><span class="sub">상세 프로필</span>
+            </div>
+          </div>
+          <div class="menu-item" onclick="changePage(1)">
+            <span style="font-size: 20px">📊</span>
+            <div class="menu-text">
+              <span class="title">Gallery</span><span class="sub">작업물</span>
+            </div>
+          </div>
+          <div class="menu-item" onclick="changePage(2)">
+            <span style="font-size: 20px">💻</span>
+            <div class="menu-text">
+              <span class="title">Dev Story</span
+              ><span class="sub">문제 해결 과정</span>
+            </div>
+          </div>
+        </nav>
+        <footer style="font-size: 12px; color: var(--apple-gray); opacity: 0.6">
+          © 2026 Portfolio
+        </footer>
+      </aside>
+
+      <section class="content-area" id="main-content"></section>
+    </main>
+
+    <script>
+      function changePage(index) {
+        const items = document.querySelectorAll(".menu-item");
+        const container = document.getElementById("main-content");
+
+        items.forEach((item, i) => {
+          i === index
+            ? item.classList.add("active")
+            : item.classList.remove("active");
+        });
+
+        const pages = [
+          // [0] About Me (profile_page.dart 전체 내용)
+          `
+        <div class="profile-page-wrapper">
+          <div class="hero-container animate" style="animation-delay: 0.1s">
+            <span class="portfolio-label">PORTFOLIO 2026</span>
+            <div class="title-stack">
+              <h1 class="hero-title shadow">안녕하세요,<br>홍준화입니다.</h1>
+              <h1 class="hero-title main">안녕하세요,<br>홍준화입니다.</h1>
+            </div>
+            <p class="hero-subtitle">데이터 수집부터 API 설계, AI 모델 연동까지<br>한 흐름으로 이어지는 백엔드 구조를 공부하여 적용하고 있습니다.</p>
+          </div>
+
+          <div class="flex-row animate" style="animation-delay: 0.3s">
+            <div class="glass-card flex-1">
+              <div class="header">
+                <div class="icon-circle" style="background: rgba(142,142,147,0.1); color: #8e8e93;">👤</div>
+                <span style="color: #8e8e93;">Profile</span>
+              </div>
+              <h2 style="font-size: 28px; font-weight: 800; margin-bottom: 5px;">홍준화</h2>
+              <p style="color: var(--apple-gray); font-weight: 500; margin-bottom: 25px;">Backend Developer</p>
+              <div style="height: 1px; background: #eee; margin-bottom: 25px;"></div>
+              <div class="info-grid">
+                <div class="info-item"><span>🎂</span><div><span class="label">생년월일</span><span class="value">2002.03.15</span></div></div>
+                <div class="info-item"><span>🧠</span><div><span class="label">MBTI</span><span class="value">ISTP</span></div></div>
+                <div class="info-item"><span>📍</span><div><span class="label">거주지</span><span class="value">경기/성남</span></div></div>
+                <div class="info-item"><span>⚽</span><div><span class="label">취미</span><span class="value">헬스/풋살</span></div></div>
+              </div>
+            </div>
+
+            <div class="glass-card flex-1">
+              <div class="header">
+                <div class="icon-circle" style="background: rgba(255,149,0,0.1); color: #ff9500;">🎓</div>
+                <span style="color: #ff9500;">Education & Activity</span>
+              </div>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="t-line"><div class="dot"></div><div class="line"></div></div>
+                  <div class="t-content">
+                    <span class="date">2021.03 - 2026.02</span>
+                    <h4>신구대학교 정보미디어학부</h4>
+                    <p>컴퓨터소프트웨어 전공</p>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="t-line"><div class="dot"></div><div class="line"></div></div>
+                  <div class="t-content">
+                    <span class="date">2022.10 - 2024.07</span>
+                    <h4>공군 방공관제사령부 유,무선통신체계정비병</h4>
+                    <p>병장 만기전역</p>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="t-line"><div class="dot"></div><div class="line"></div></div>
+                  <div class="t-content">
+                    <span class="date">2025.02 - 2025.12</span>
+                    <h4>컴퓨터소프트웨어과 학회장</h4>
+                    <p>학회장연합회 총무부원</p>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="t-line"><div class="dot"></div><div class="line"></div></div>
+                  <div class="t-content">
+                    <span class="date">2025.01 - 2026.01</span>
+                    <h4>IT보안과 교내근로</h4>
+                    <p>교내 전산망 관리 보조</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex-row animate" style="animation-delay: 0.5s">
+            <div class="glass-card flex-1">
+              <div class="header">
+                <div class="icon-circle" style="background: rgba(0,122,255,0.1); color: var(--primary-blue);">🏆</div>
+                <span style="color: var(--primary-blue);">Certifications</span>
+              </div>
+              <div class="chip-container">
+                <span class="chip">MOS Master</span>
+                <span class="chip">정보처리기사 (취득예정)</span>
+                <span class="chip">SQLD (취득예정)</span>
+              </div>
+            </div>
+            
+            <a href="https://github.com/Leozzun" target="_blank" class="glass-card flex-1 dark-card">
+              <div style="display:flex; justify-content:space-between; align-items:start;">
+                <span style="font-size: 32px;">💻</span>
+                <span style="font-size: 20px; opacity:0.5;">↗</span>
+              </div>
+              <div>
+                <h3>GitHub</h3>
+                <p style="opacity:0.6; font-size:14px;">Visit Repository</p>
+              </div>
+            </a>
+          </div>
+
+          <div class="glass-card animate" style="animation-delay: 0.7s">
+            <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 25px;">Technical Skills</h3>
+            <div class="skills-grid">
+              <div class="skill-group">
+                <h4>Backend</h4>
+                <div class="skill-item"><span class="check-icon">✓</span>Java</div>
+                <div class="skill-item"><span class="check-icon">✓</span>Spring Boot</div>
+                <div class="skill-item"><span class="check-icon">✓</span>MySQL / JPA</div>
+              </div>
+              <div class="skill-group">
+                <h4>Frontend</h4>
+                <div class="skill-item"><span class="check-icon">✓</span>Flutter / Dart</div>
+                <div class="skill-item"><span class="check-icon">✓</span>HTML / CSS / JS</div>
+              </div>
+              <div class="skill-group">
+                <h4>DevOps</h4>
+                <div class="skill-item"><span class="check-icon">✓</span>Git / GitHub</div>
+                <div class="skill-item"><span class="check-icon">✓</span>AWS (EC2, S3)</div>
+                <div class="skill-item"><span class="check-icon">✓</span>Docker</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        `,
+          // [1] Gallery (gallery_page.dart의 PageView 구조 재현용 빈 페이지)
+          `<div style="padding:100px; text-align:center;">
+          <h2 style="font-size:32px; font-weight:800; margin-bottom:10px;">Gallery Page</h2>
+          <p style="color:var(--apple-gray);">준비 중인 프로젝트 갤러리입니다.</p>
+        </div>`,
+          // [2] Dev Story
+          `<div style="padding:100px; text-align:center;">
+          <h2 style="font-size:32px; font-weight:800; margin-bottom:10px;">Dev Story</h2>
+          <p style="color:var(--apple-gray);">개발 과정에서의 고민과 해결책을 공유합니다.</p>
+        </div>`,
+        ];
+
+        container.innerHTML = pages[index];
+        container.scrollTop = 0; // 페이지 전환 시 스크롤 상단 이동
+      }
+
+      // 초기 실행
+      window.onload = () => changePage(0);
+    </script>
   </body>
 </html>
