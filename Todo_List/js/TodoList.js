@@ -108,5 +108,12 @@ const getFilterData = (search) => {
     let re = mockData.filter((todo) => todo.content.includes(search));
     console.log(re);
     return re;
+
+    // const searchedTodos = mockData.filter((todo) => {
+    //   return todo.content
+    //     .toLocaleLowerCase()
+    //     .includes(search.toLocaleLowerCase());
+    // });
+    // return searchedTodos;
   }
 };
