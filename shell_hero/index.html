@@ -487,27 +487,63 @@ con.<span class="code-method">setAutoCommit</span>(<span class="code-keyword">fa
     </div>
 
     <!-- 회고 -->
-    <div class="two-col animate" style="animation-delay:0.5s">
-      <div class="col">
-        <div class="glass-card" style="height:100%;background:rgba(48,209,88,0.06);border-color:rgba(48,209,88,0.2);">
-          <div class="card-header">
-            <div class="icon-circle" style="background:rgba(48,209,88,0.15);color:var(--game-green);">✅</div>
-            <span class="card-title">잘한 점</span>
-          </div>
-          <div class="role-item"><div class="role-dot" style="background:var(--game-green);"></div><span style="font-size:14px;line-height:1.7;">구현 전 요구사항·데이터 흐름·클래스 책임을 먼저 정리해 팀원 모두 같은 기준으로 개발</span></div>
-          <div class="role-item"><div class="role-dot" style="background:var(--game-green);"></div><span style="font-size:14px;line-height:1.7;">전투·보상처럼 여러 상태가 함께 바뀌는 흐름을 트랜잭션 단위로 설계해 정합성 확보</span></div>
-          <div class="role-item"><div class="role-dot" style="background:var(--game-green);"></div><span style="font-size:14px;line-height:1.7;">GitHub Wiki에 요구사항·ERD·클래스 구조·트러블슈팅을 남겨 발표 후에도 설계 근거 보존</span></div>
-        </div>
+    <div class="glass-card animate" style="animation-delay:0.5s;">
+      <div class="card-header">
+        <div class="icon-circle" style="background:rgba(88,86,214,0.12);color:#5856d6;">💭</div>
+        <span class="card-title">회고</span>
       </div>
-      <div class="col">
-        <div class="glass-card" style="height:100%;background:rgba(255,159,10,0.05);border-color:rgba(255,159,10,0.2);">
-          <div class="card-header">
-            <div class="icon-circle" style="background:rgba(255,159,10,0.15);color:#ff9f0a;">📌</div>
-            <span class="card-title">다음 개선 방향</span>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+
+        <!-- 느낀 점 -->
+        <div style="padding:22px;background:rgba(255,255,255,0.5);border-radius:18px;border-left:3px solid var(--primary-blue);">
+          <div style="font-size:12px;font-weight:700;color:var(--primary-blue);letter-spacing:1px;margin-bottom:10px;">개인적인 느낀 점</div>
+          <p style="font-size:14px;line-height:1.9;color:var(--apple-black);">이번 프로젝트에서는 설계 단계부터 팀원들과 디테일하게 구조를 잡고 시작해서, 구현 과정이 훨씬 수월했습니다. 또한 Slack, Jira, GitHub를 함께 활용하면서 실제 협업 환경을 경험할 수 있었던 점이 인상 깊었습니다. DB 연동과 세팅, 상점, 인벤토리 기능을 구현하면서 FK로 얽힌 구조에서 어려움을 겪었지만, 디버깅과 팀원 피드백을 통해 해결하며 마무리할 수 있었습니다.</p>
+        </div>
+
+        <!-- 배운 점 -->
+        <div style="padding:22px;background:rgba(255,255,255,0.5);border-radius:18px;border-left:3px solid var(--game-green);">
+          <div style="font-size:12px;font-weight:700;color:var(--game-green);letter-spacing:1px;margin-bottom:14px;">프로젝트에서 배운 점</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <span style="font-family:'SF Mono',monospace;font-size:11px;color:var(--game-green);font-weight:700;white-space:nowrap;padding-top:2px;">SYS.LOG[01]</span>
+              <div><span style="font-size:13px;font-weight:700;">[설계 중요성]</span><span style="font-size:13px;color:var(--apple-gray);line-height:1.7;"> 초기 객체지향 설계와 마스터 데이터 구조화가 이후 확장성과 유지보수에 미치는 긍정적 영향을 강하게 체감함.</span></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <span style="font-family:'SF Mono',monospace;font-size:11px;color:var(--game-green);font-weight:700;white-space:nowrap;padding-top:2px;">SYS.LOG[02]</span>
+              <div><span style="font-size:13px;font-weight:700;">[팀 협업의 가치]</span><span style="font-size:13px;color:var(--apple-gray);line-height:1.7;"> Git/GitHub를 통한 버전 관리와 지속적인 PR 리뷰 문화가 코드 품질 향상 및 충돌 방지에 핵심적임을 확인.</span></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <span style="font-family:'SF Mono',monospace;font-size:11px;color:var(--game-green);font-weight:700;white-space:nowrap;padding-top:2px;">SYS.LOG[03]</span>
+              <div><span style="font-size:13px;font-weight:700;">[문제 해결 경험]</span><span style="font-size:13px;color:var(--apple-gray);line-height:1.7;"> DB 트랜잭션 동시성 제어와 세션 관리 이슈를 디버깅하며 백엔드 시스템의 코어 로직과 안정성을 깊이 이해함.</span></div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:flex-start;">
+              <span style="font-family:'SF Mono',monospace;font-size:11px;color:var(--game-green);font-weight:700;white-space:nowrap;padding-top:2px;">SYS.LOG[04]</span>
+              <div><span style="font-size:13px;font-weight:700;">[성장 실감]</span><span style="font-size:13px;color:var(--apple-gray);line-height:1.7;"> 단순한 문법 학습을 넘어, 기획부터 DB 설계, 구현, 배포까지 전체 사이클을 경험하며 개발자로서의 시야가 크게 확장됨.</span></div>
+            </div>
           </div>
-          <div class="role-item"><div class="role-dot" style="background:#ff9f0a;"></div><span style="font-size:14px;line-height:1.7;">Spring Boot 기반 웹 API로 확장 — 콘솔 UI와 비즈니스 로직 완전 분리</span></div>
-          <div class="role-item"><div class="role-dot" style="background:#ff9f0a;"></div><span style="font-size:14px;line-height:1.7;">JUnit 테스트 코드 + 샘플 DB 검증 스크립트 추가</span></div>
-          <div class="role-item"><div class="role-dot" style="background:#ff9f0a;"></div><span style="font-size:14px;line-height:1.7;">HikariCP Connection Pool 도입으로 DB 연결 효율화</span></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 확장 방향성 -->
+    <div class="glass-card animate" style="animation-delay:0.52s;background:rgba(0,0,0,0.02);border-color:rgba(48,209,88,0.15);">
+      <div class="card-header">
+        <div class="icon-circle" style="background:rgba(48,209,88,0.12);color:var(--game-green);">🚀</div>
+        <span class="card-title">향후 발전 방향 <span style="font-size:13px;color:var(--apple-gray);font-weight:500;">Future Directions</span></span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:18px;background:rgba(255,255,255,0.5);border-radius:16px;">
+          <span style="font-family:'SF Mono',monospace;font-size:11px;color:var(--game-green);font-weight:700;white-space:nowrap;padding-top:3px;">UPDATE.PLAN[V2.0]</span>
+          <div><span style="font-size:13px;font-weight:700;">[웹 기반 확장]</span><span style="font-size:13px;color:var(--apple-gray);line-height:1.7;"> Spring Boot를 도입하여 현재의 콘솔 CLI 환경을 웹 브라우저 기반의 GUI 서비스로 마이그레이션.</span></div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:18px;background:rgba(255,255,255,0.5);border-radius:16px;">
+          <span style="font-family:'SF Mono',monospace;font-size:11px;color:var(--game-green);font-weight:700;white-space:nowrap;padding-top:3px;">UPDATE.PLAN[V2.1]</span>
+          <div><span style="font-size:13px;font-weight:700;">[멀티플레이어]</span><span style="font-size:13px;color:var(--apple-gray);line-height:1.7;"> WebSocket 기반 실시간 통신을 적용하여 유저 간 채팅, 파티 사냥(Raid), PvP 대전 시스템 도입.</span></div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:flex-start;padding:18px;background:rgba(255,255,255,0.5);border-radius:16px;">
+          <span style="font-family:'SF Mono',monospace;font-size:11px;color:var(--game-green);font-weight:700;white-space:nowrap;padding-top:3px;">UPDATE.PLAN[V2.2]</span>
+          <div><span style="font-size:13px;font-weight:700;">[AI 적응형 난이도]</span><span style="font-size:13px;color:var(--apple-gray);line-height:1.7;"> 유저의 누적 플레이 패턴 및 스펙 데이터를 실시간 분석하여 몬스터의 능력치와 행동 패턴이 동적으로 변하는 AI 적용.</span></div>
         </div>
       </div>
     </div>
