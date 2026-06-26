@@ -49,11 +49,13 @@ body {
   border: 1px solid var(--glass-border);
   border-radius: 35px;
   display: flex; flex-direction: column; align-items: center;
-  padding: 50px 20px;
+  padding: 30px 20px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.05);
   position: sticky; top: 25px; height: calc(100vh - 50px);
+  overflow-y: auto; scrollbar-width: none;
 }
-.profile-avatar { width: 150px; height: 150px; background: linear-gradient(135deg,#00c6ff,#0072ff); border-radius: 50%; padding: 3px; margin-bottom: 20px; }
+.sidebar::-webkit-scrollbar { display: none; }
+.profile-avatar { width: 100px; height: 100px; background: linear-gradient(135deg,#00c6ff,#0072ff); border-radius: 50%; padding: 3px; margin-bottom: 12px; }
 .avatar-inner { width: 100%; height: 100%; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 .avatar-inner img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 .back-btn {
@@ -63,21 +65,21 @@ body {
   border: 1px solid var(--glass-border);
   color: var(--apple-black); text-decoration: none;
   font-size: 14px; font-weight: 600;
-  transition: all 0.3s ease; margin-top: 20px; width: 100%;
+  transition: all 0.3s ease; margin-top: 12px; width: 100%;
 }
 .back-btn:hover { background: #1d1d1f; color: white; }
 
 .project-badge {
-  margin-top: 30px; width: 100%;
+  margin-top: 16px; width: 100%;
   background: linear-gradient(135deg, rgba(48,209,88,0.15), rgba(0,122,255,0.1));
   border: 1px solid rgba(48,209,88,0.3);
-  border-radius: 20px; padding: 20px;
+  border-radius: 20px; padding: 16px;
 }
 .badge-label { font-size: 11px; color: var(--game-green); font-weight: 700; letter-spacing: 1px; display: block; margin-bottom: 8px; }
 .badge-title { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
 .badge-sub { font-size: 12px; color: var(--apple-gray); }
 
-.sidebar-meta { width: 100%; margin-top: 20px; }
+.sidebar-meta { width: 100%; margin-top: 12px; }
 .meta-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 13px; }
 .meta-item .key { color: var(--apple-gray); }
 .meta-item .val { font-weight: 600; }
@@ -189,6 +191,9 @@ body {
   font-family: 'SF Mono', 'Fira Code', monospace;
   font-size: 13px; line-height: 1.7;
   color: #e5e5ea; overflow-x: auto;
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
 }
 .code-comment { color: #636366; }
 .code-keyword { color: #ff7eb6; }
