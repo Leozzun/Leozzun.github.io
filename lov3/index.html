@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LOV3 — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --black: #1d1d1f;
+  --gray-1: #86868b;
+  --gray-2: #d1d1d6;
+  --gray-3: #f5f5f7;
+  --white: #ffffff;
+  --accent: #ff2d55;
+  --glass: rgba(255,255,255,0.72);
+  --glass-border: rgba(0,0,0,0.07);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:"Inter",sans-serif; background:#ebebed; color:var(--black); min-height:100vh; }
+
+/* BG */
+.bg { position:fixed; inset:0; z-index:-1; background:#f0f0f2; }
+.bg-blob { position:absolute; border-radius:50%; filter:blur(100px); }
+.bg-blob-1 { width:700px; height:700px; background:rgba(255,45,85,0.12); top:-200px; left:-200px; animation:drift 14s infinite alternate ease-in-out; }
+.bg-blob-2 { width:600px; height:600px; background:rgba(255,100,150,0.1); bottom:-150px; right:-100px; animation:drift 18s infinite alternate-reverse ease-in-out; }
+@keyframes drift { from{transform:translate(0,0)} to{transform:translate(50px,30px)} }
+
+/* Layout */
+.layout { display:flex; gap:20px; padding:20px; min-height:100vh; max-width:1500px; margin:0 auto; }
+
+/* Sidebar */
+.sidebar {
+  width:260px; min-width:260px;
+  background:var(--glass);
+  backdrop-filter:blur(24px);
+  border:1px solid var(--glass-border);
+  border-radius:28px;
+  padding:28px 20px;
+  position:sticky; top:20px; height:calc(100vh - 40px);
+  overflow-y:auto; scrollbar-width:none;
+  display:flex; flex-direction:column; align-items:center; gap:0;
+  box-shadow:0 2px 20px rgba(0,0,0,0.05);
+}
+.sidebar::-webkit-scrollbar { display:none; }
+
+.avatar { width:88px; height:88px; border-radius:50%; background:linear-gradient(135deg,#ff6b9d,#ff2d55); padding:2px; margin-bottom:12px; }
+.avatar-inner { width:100%; height:100%; border-radius:50%; background:white; overflow:hidden; }
+.avatar-inner img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+.sidebar-name { font-size:17px; font-weight:800; margin-bottom:3px; }
+.sidebar-role { font-size:12px; color:var(--gray-1); margin-bottom:20px; }
+
+.back-btn {
+  display:flex; align-items:center; gap:6px; width:100%;
+  padding:11px 16px; border-radius:14px;
+  background:rgba(0,0,0,0.04); border:1px solid var(--glass-border);
+  font-size:13px; font-weight:600; color:var(--black);
+  text-decoration:none; transition:all 0.2s;
+  margin-bottom:20px;
+}
+.back-btn:hover { background:var(--black); color:white; }
+
+.sidebar-section { width:100%; margin-top:4px; }
+.sidebar-label { font-size:10px; font-weight:700; letter-spacing:1.2px; color:var(--gray-1); margin-bottom:10px; display:block; }
+
+.sidebar-info { display:flex; flex-direction:column; gap:0; width:100%; }
+.info-row { display:flex; justify-content:space-between; align-items:baseline; padding:8px 0; border-bottom:1px solid rgba(0,0,0,0.05); font-size:12px; }
+.info-row:last-child { border-bottom:none; }
+.info-key { color:var(--gray-1); }
+.info-val { font-weight:600; text-align:right; max-width:150px; }
+.info-val a { color:var(--accent); text-decoration:none; }
+
+/* Main content */
+.main { flex:1; display:flex; flex-direction:column; gap:16px; padding-bottom:40px; }
+
+/* Cards */
+.card {
+  background:var(--glass);
+  backdrop-filter:blur(24px);
+  border:1px solid var(--glass-border);
+  border-radius:24px;
+  padding:32px;
+  box-shadow:0 2px 16px rgba(0,0,0,0.04);
+}
+
+/* Hero */
+.hero {
+  background:var(--black);
+  border-radius:24px;
+  padding:44px 48px;
+  color:white;
+  position:relative; overflow:hidden;
+}
+.hero::before {
+  content:'';
+  position:absolute; top:-120px; right:-80px;
+  width:500px; height:500px;
+  background:radial-gradient(circle, rgba(0,122,255,0.2) 0%, transparent 65%);
+  border-radius:50%;
+  pointer-events:none;
+}
+.hero-eyebrow {
+  font-size:11px; font-weight:700; letter-spacing:2px;
+  color:rgba(255,255,255,0.4); margin-bottom:20px; display:block;
+}
+.hero-title { font-size:52px; font-weight:800; letter-spacing:-2px; line-height:1.05; margin-bottom:20px; position:relative; z-index:1; }
+.hero-title .accent { color:var(--accent); }
+.hero-desc { font-size:15px; color:rgba(255,255,255,0.55); line-height:1.75; max-width:520px; position:relative; z-index:1; margin-bottom:28px; }
+.hero-chips { display:flex; flex-wrap:wrap; gap:8px; position:relative; z-index:1; }
+.hero-chip { padding:6px 14px; border-radius:100px; font-size:12px; font-weight:600; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.8); }
+.hero-link { display:inline-flex; align-items:center; gap:6px; margin-top:24px; padding:11px 22px; background:var(--accent); color:white; border-radius:100px; font-size:13px; font-weight:700; text-decoration:none; position:relative; z-index:1; transition:opacity 0.2s; }
+.hero-link:hover { opacity:0.85; }
+
+/* Section title */
+.section-title { font-size:13px; font-weight:700; color:var(--gray-1); letter-spacing:0.5px; margin-bottom:20px; display:flex; align-items:center; gap:10px; }
+.section-title::after { content:''; flex:1; height:1px; background:var(--glass-border); }
+
+/* Two col */
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.three-col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+
+/* Table */
+.data-table { width:100%; border-collapse:collapse; font-size:13px; }
+.data-table th { text-align:left; padding:9px 12px; font-size:11px; font-weight:700; letter-spacing:0.5px; color:var(--gray-1); border-bottom:1px solid var(--glass-border); background:rgba(0,0,0,0.02); }
+.data-table td { padding:10px 12px; border-bottom:1px solid rgba(0,0,0,0.04); line-height:1.5; vertical-align:top; }
+.data-table tr:last-child td { border-bottom:none; }
+.data-table tr:hover td { background:rgba(0,0,0,0.015); }
+
+/* Method badge */
+.badge { display:inline-block; padding:2px 7px; border-radius:5px; font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:600; }
+.badge-get  { background:rgba(48,209,88,0.1);  color:#1a6b35; }
+.badge-post { background:rgba(0,122,255,0.1);  color:#cc1a35; }
+.badge-put  { background:rgba(255,159,10,0.1); color:#8a5200; }
+.badge-del  { background:rgba(255,69,58,0.1);  color:#b81c0e; }
+
+/* Code block */
+.code { font-family:"JetBrains Mono",monospace; font-size:12px; line-height:1.75; background:#1c1c1e; color:#e5e5ea; border-radius:14px; padding:20px 22px; overflow-x:auto; white-space:pre; margin-top:12px; }
+.c-comment { color:#636366; }
+.c-kw      { color:#ff7eb6; }
+.c-type    { color:#67d7f0; }
+.c-fn      { color:#b4f9c6; }
+.c-str     { color:#ffd60a; }
+.c-anno    { color:#cf8dfa; }
+
+/* Spec list */
+.spec-list { display:flex; flex-direction:column; gap:0; }
+.spec-item { display:flex; gap:10px; padding:9px 0; border-bottom:1px solid rgba(0,0,0,0.05); font-size:13px; line-height:1.6; }
+.spec-item:last-child { border-bottom:none; }
+.spec-dot { width:5px; height:5px; border-radius:50%; background:var(--accent); flex-shrink:0; margin-top:7px; }
+
+/* Arch flow */
+.arch-flow { display:flex; flex-direction:column; gap:6px; }
+.arch-item { display:flex; align-items:center; gap:14px; padding:13px 16px; border-radius:12px; border:1px solid var(--glass-border); background:rgba(255,255,255,0.5); font-size:13px; }
+.arch-label { font-weight:700; min-width:140px; }
+.arch-desc { color:var(--gray-1); font-size:12px; }
+.arch-arrow { text-align:center; color:var(--gray-2); font-size:12px; padding:2px 0; }
+
+/* Relation grid */
+.rel-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.rel-item { padding:14px 16px; background:rgba(255,255,255,0.5); border-radius:12px; border:1px solid var(--glass-border); font-size:13px; }
+.rel-name { font-weight:700; margin-bottom:3px; }
+.rel-desc { color:var(--gray-1); font-size:12px; }
+
+/* Docker services */
+.docker-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.docker-item { background:#1c1c1e; border-radius:14px; padding:18px; color:white; }
+.docker-svc  { font-size:11px; font-family:"JetBrains Mono",monospace; font-weight:600; color:rgba(255,255,255,0.4); margin-bottom:6px; }
+.docker-name { font-size:15px; font-weight:800; margin-bottom:6px; }
+.docker-desc { font-size:12px; color:rgba(255,255,255,0.45); line-height:1.5; }
+
+/* CI/CD flow */
+.cicd-flow { display:flex; align-items:center; flex-wrap:wrap; gap:8px; font-size:12px; font-weight:600; }
+.cicd-step { padding:8px 14px; background:rgba(0,0,0,0.05); border-radius:8px; }
+.cicd-arrow { color:var(--gray-2); font-size:16px; }
+
+/* Retro log style */
+.log-list { display:flex; flex-direction:column; gap:10px; }
+.log-item { display:flex; gap:12px; align-items:flex-start; padding:12px 0; border-bottom:1px solid rgba(0,0,0,0.05); }
+.log-item:last-child { border-bottom:none; }
+.log-tag { font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:600; color:var(--accent); white-space:nowrap; padding-top:2px; min-width:70px; }
+.log-text { font-size:13px; line-height:1.7; color:var(--black); }
+.log-text b { font-weight:700; }
+
+/* Trouble */
+.trouble-list { display:flex; flex-direction:column; gap:0; }
+.trouble-item { padding:20px 0; border-bottom:1px solid rgba(0,0,0,0.06); }
+.trouble-item:last-child { border-bottom:none; padding-bottom:0; }
+.trouble-title { font-size:15px; font-weight:700; margin-bottom:12px; }
+.trouble-row { display:flex; gap:8px; font-size:13px; line-height:1.65; margin-bottom:5px; }
+.trouble-key { font-weight:700; color:var(--gray-1); min-width:34px; flex-shrink:0; }
+
+/* Update plan */
+.plan-list { display:flex; flex-direction:column; gap:10px; }
+.plan-item { display:flex; gap:12px; align-items:flex-start; padding:14px 16px; background:rgba(255,255,255,0.5); border-radius:12px; border:1px solid var(--glass-border); }
+.plan-tag { font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:600; color:var(--accent); white-space:nowrap; padding-top:2px; }
+.plan-text { font-size:13px; line-height:1.65; }
+.plan-text b { font-weight:700; }
+
+/* Anim */
+@keyframes up { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+.anim { opacity:0; animation:up 0.7s cubic-bezier(0.2,0.8,0.2,1) forwards; }
+</style>
+</head>
+<body>
+<div class="bg">
+  <div class="bg-blob bg-blob-1"></div>
+  <div class="bg-blob bg-blob-2"></div>
+</div>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="avatar">
+      <div class="avatar-inner">
+        <img src="../img/IMG_3901.PNG" alt="Profile" onerror="this.parentElement.innerHTML='🧑‍💻'" />
+      </div>
+    </div>
+    <div class="sidebar-name">Hong Jun-hwa</div>
+    <div class="sidebar-role">Backend Developer</div>
+
+    <a href="../index.html" class="back-btn">← 포트폴리오로 돌아가기</a>
+
+    <div class="sidebar-section">
+      <span class="sidebar-label">PROJECT INFO</span>
+      <div class="sidebar-info">
+        <div class="info-row"><span class="info-key">프로젝트</span><span class="info-val">LOV3</span></div>
+        <div class="info-row"><span class="info-key">유형</span><span class="info-val">개인 프로젝트</span></div>
+        <div class="info-row"><span class="info-key">작성일</span><span class="info-val">2026.06.10</span></div>
+        <div class="info-row"><span class="info-key">Backend</span><span class="info-val">Spring Boot 3.3</span></div>
+        <div class="info-row"><span class="info-key">Frontend</span><span class="info-val">React 18 + Vite</span></div>
+        <div class="info-row"><span class="info-key">DB</span><span class="info-val">MySQL 8.0</span></div>
+        <div class="info-row"><span class="info-key">배포</span><span class="info-val">AWS EC2 + Docker</span></div>
+        <div class="info-row"><span class="info-key">CI/CD</span><span class="info-val">GitHub Actions</span></div>
+        <div class="info-row"><span class="info-key">URL</span><span class="info-val"><a href="https://lov3.n-e.kr/" target="_blank">lov3.n-e.kr ↗</a></span></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- Hero -->
+    <div class="hero anim" style="animation-delay:0.05s">
+      <span class="hero-eyebrow">PERSONAL PROJECT · FULL STACK · 2026</span>
+      <h1 class="hero-title">L<span class="accent">OV</span>3</h1>
+      <p class="hero-desc">장소를 기반으로 동행자를 모집하고 매칭하는 데이트 게시판 서비스.<br>JWT 인증부터 JPA 연관관계 설계, Docker 배포, GitHub Actions CI/CD까지<br>백엔드 전 과정을 직접 설계하고 구현한 개인 프로젝트입니다.</p>
+      <div class="hero-chips">
+        <span class="hero-chip">Spring Boot 3</span>
+        <span class="hero-chip">React 18</span>
+        <span class="hero-chip">Java 21</span>
+        <span class="hero-chip">Spring Security 6</span>
+        <span class="hero-chip">MySQL 8</span>
+        <span class="hero-chip">Docker</span>
+        <span class="hero-chip">GitHub Actions</span>
+        <span class="hero-chip">AWS EC2</span>
+      </div>
+      <a href="https://lov3.n-e.kr/" target="_blank" class="hero-link">배포된 서비스 보기 ↗</a>
+    </div>
+
+    <!-- 1. 프로젝트 개요 -->
+    <div class="card anim" style="animation-delay:0.1s">
+      <div class="section-title">1. 프로젝트 개요</div>
+      <p style="font-size:14px;line-height:1.8;margin-bottom:20px;">LOV3는 데이트 장소를 기반으로 동행자를 모집하고 매칭하는 게시판 서비스입니다. 사용자는 특정 장소를 선택해 게시글을 작성하고, 관심 있는 상대방에게 데이트 신청을 보낼 수 있습니다.</p>
+      <p style="font-size:14px;line-height:1.8;color:var(--gray-1);margin-bottom:24px;">Spring Boot 3 기반의 REST API 서버를 직접 설계·구현하고, JWT 인증, JPA 연관관계, Docker 기반 배포까지 전 과정을 경험하는 것을 목표로 합니다.</p>
+
+      <div class="section-title">주요 기능</div>
+      <table class="data-table">
+        <thead><tr><th>기능</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td>회원가입 / 로그인 / 탈퇴</td><td>JWT 기반 인증</td></tr>
+          <tr><td>프로필 설정</td><td>사진, 성별, 나이, 자기소개</td></tr>
+          <tr><td>게시판 CRUD</td><td>장소 연결 필수, 페이징 처리</td></tr>
+          <tr><td>데이트 신청</td><td>신청 / 수락 / 거절 / 취소</td></tr>
+          <tr><td>장소 검색</td><td>키워드 검색, 장소별 게시글 필터</td></tr>
+          <tr><td>관리자 기능</td><td>회원 관리, 장소 등록·수정·삭제</td></tr>
+          <tr><td>이미지 업로드</td><td>프로필 사진, 장소 사진</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2. 요구사항 분석 -->
+    <div class="card anim" style="animation-delay:0.13s">
+      <div class="section-title">2. 요구사항 분석</div>
+      <div class="two-col">
+        <div>
+          <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:12px;">기능 요구사항</p>
+          <div class="spec-list">
+            <div class="spec-item"><div class="spec-dot"></div><span>비회원은 게시글·장소 조회만 가능</span></div>
+            <div class="spec-item"><div class="spec-dot"></div><span>로그인 회원은 게시글 작성, 데이트 신청 가능</span></div>
+            <div class="spec-item"><div class="spec-dot"></div><span>게시글 작성자만 본인 글 수정·삭제 가능 (관리자 포함)</span></div>
+            <div class="spec-item"><div class="spec-dot"></div><span>데이트 신청은 게시글 작성자만 수락·거절 가능</span></div>
+            <div class="spec-item"><div class="spec-dot"></div><span>관리자만 장소 등록·수정·삭제 가능</span></div>
+            <div class="spec-item"><div class="spec-dot"></div><span>게시글은 반드시 기존 장소 중 하나를 선택해야 함</span></div>
+          </div>
+        </div>
+        <div>
+          <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:12px;">비기능 요구사항</p>
+          <div class="spec-list">
+            <div class="spec-item"><div class="spec-dot"></div><span>인증은 Stateless JWT 방식으로 처리 (세션 미사용)</span></div>
+            <div class="spec-item"><div class="spec-dot"></div><span>모든 비밀번호 BCrypt 암호화 저장</span></div>
+            <div class="spec-item"><div class="spec-dot"></div><span>이미지 파일은 서버 파일시스템에 저장, Docker 볼륨으로 영속성 보장</span></div>
+            <div class="spec-item"><div class="spec-dot"></div><span><code style="font-family:JetBrains Mono,monospace;font-size:11px;background:rgba(0,0,0,0.05);padding:1px 5px;border-radius:4px">ddl-auto=none</code> — DB 스키마 변경은 수동 관리</span></div>
+            <div class="spec-item"><div class="spec-dot"></div><span>CORS 전체 허용 (개발/운영 통합)</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. 기술 스택 -->
+    <div class="card anim" style="animation-delay:0.15s">
+      <div class="section-title">3. 기술 스택</div>
+      <div class="three-col">
+        <div>
+          <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:12px;">BACKEND</p>
+          <table class="data-table">
+            <tbody>
+              <tr><td style="color:var(--gray-1);width:90px">Framework</td><td>Spring Boot 3.3.0</td></tr>
+              <tr><td style="color:var(--gray-1)">Language</td><td>Java 21</td></tr>
+              <tr><td style="color:var(--gray-1)">Build</td><td>Maven</td></tr>
+              <tr><td style="color:var(--gray-1)">ORM</td><td>Spring Data JPA</td></tr>
+              <tr><td style="color:var(--gray-1)">Security</td><td>Spring Security 6</td></tr>
+              <tr><td style="color:var(--gray-1)">JWT</td><td>jjwt 0.12.3</td></tr>
+              <tr><td style="color:var(--gray-1)">기타</td><td>Lombok, Gson</td></tr>
+              <tr><td style="color:var(--gray-1)">DB</td><td>MySQL 8.0 (Docker)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:12px;">FRONTEND</p>
+          <table class="data-table">
+            <tbody>
+              <tr><td style="color:var(--gray-1);width:90px">Framework</td><td>React 18</td></tr>
+              <tr><td style="color:var(--gray-1)">Build</td><td>Vite</td></tr>
+              <tr><td style="color:var(--gray-1)">Routing</td><td>React Router v6</td></tr>
+              <tr><td style="color:var(--gray-1)">HTTP</td><td>Axios</td></tr>
+              <tr><td style="color:var(--gray-1)">상태관리</td><td>Context API</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:12px;">DEVOPS</p>
+          <table class="data-table">
+            <tbody>
+              <tr><td style="color:var(--gray-1);width:90px">컨테이너</td><td>Docker, Docker Compose</td></tr>
+              <tr><td style="color:var(--gray-1)">CI/CD</td><td>GitHub Actions</td></tr>
+              <tr><td style="color:var(--gray-1)">서버</td><td>AWS EC2 (Ubuntu 24.04)</td></tr>
+              <tr><td style="color:var(--gray-1)">웹서버</td><td>Nginx (리버스 프록시)</td></tr>
+              <tr><td style="color:var(--gray-1)">이미지</td><td>Docker Hub</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. 시스템 아키텍처 -->
+    <div class="card anim" style="animation-delay:0.17s">
+      <div class="section-title">4. 시스템 아키텍처</div>
+      <div class="arch-flow">
+        <div class="arch-item"><span class="arch-label">React (Nginx)</span><span class="arch-desc">정적 빌드 서빙 / 리버스 프록시 / :80</span></div>
+        <div class="arch-arrow">↕ HTTPS</div>
+        <div class="arch-item"><span class="arch-label">Spring Security 6</span><span class="arch-desc">JWTFilter → 토큰 검증 → SecurityContextHolder 저장</span></div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-item"><span class="arch-label">Controller Layer</span><span class="arch-desc">REST API 요청/응답 처리, @AuthenticationPrincipal 인증 정보 추출</span></div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-item"><span class="arch-label">Service Layer</span><span class="arch-desc">비즈니스 로직, 권한 검증 (memberNo 비교)</span></div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-item"><span class="arch-label">Repository (JPA)</span><span class="arch-desc">Spring Data JPA / 쿼리 메서드 / @Query JOIN FETCH</span></div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-item"><span class="arch-label">MySQL 8.0</span><span class="arch-desc">Docker 컨테이너 / Named Volume으로 데이터 영속성 보장</span></div>
+      </div>
+    </div>
+
+    <!-- 5. 데이터베이스 설계 -->
+    <div class="card anim" style="animation-delay:0.19s">
+      <div class="section-title">5. 데이터베이스 설계</div>
+      <div style="display:flex;flex-direction:column;gap:20px;">
+
+        <div>
+          <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:10px;">member</p>
+          <table class="data-table">
+            <thead><tr><th>컬럼</th><th>타입</th><th>설명</th></tr></thead>
+            <tbody>
+              <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">member_no</code></td><td>BIGINT (PK)</td><td>회원 번호</td></tr>
+              <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">id</code></td><td>VARCHAR(30)</td><td>로그인 ID (unique)</td></tr>
+              <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">pwd</code></td><td>VARCHAR(255)</td><td>BCrypt 암호화 비밀번호</td></tr>
+              <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">role</code></td><td>VARCHAR(20)</td><td>ROLE_USER / ROLE_ADMIN</td></tr>
+              <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">profile_img, gender, age, introduce</code></td><td>—</td><td>프로필 정보</td></tr>
+              <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">reg_date</code></td><td>DATETIME</td><td>가입일</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="two-col">
+          <div>
+            <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:10px;">board</p>
+            <table class="data-table">
+              <thead><tr><th>컬럼</th><th>타입</th><th>설명</th></tr></thead>
+              <tbody>
+                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">board_id</code></td><td>BIGINT (PK)</td><td>게시글 번호</td></tr>
+                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">title, content</code></td><td>VARCHAR</td><td>제목, 내용</td></tr>
+                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">member_no</code></td><td>BIGINT (FK)</td><td>작성자</td></tr>
+                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">place_id</code></td><td>BIGINT (FK)</td><td>연결 장소</td></tr>
+                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">view_count, reg_date, update_date</code></td><td>—</td><td>메타정보</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:10px;">date_request</p>
+            <table class="data-table">
+              <thead><tr><th>컬럼</th><th>타입</th><th>설명</th></tr></thead>
+              <tbody>
+                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">request_id</code></td><td>BIGINT (PK)</td><td>신청 번호</td></tr>
+                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">status</code></td><td>VARCHAR(20)</td><td>PENDING / ACCEPTED / REJECTED</td></tr>
+                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">message</code></td><td>VARCHAR(500)</td><td>신청 메시지</td></tr>
+                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">board_id</code></td><td>BIGINT (FK)</td><td>대상 게시글</td></tr>
+                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">sender_no</code></td><td>BIGINT (FK)</td><td>신청자</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 6. API 설계 -->
+    <div class="card anim" style="animation-delay:0.21s">
+      <div class="section-title">6. API 설계</div>
+
+      <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:10px;">회원 (Member)</p>
+      <table class="data-table" style="margin-bottom:20px">
+        <thead><tr><th>Method</th><th>URL</th><th>인증</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge badge-post">POST</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/login</code></td><td>—</td><td>로그인 (JWT 발급)</td></tr>
+          <tr><td><span class="badge badge-post">POST</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/members</code></td><td>—</td><td>회원가입</td></tr>
+          <tr><td><span class="badge badge-get">GET</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/members/check?id=</code></td><td>—</td><td>ID 중복 확인</td></tr>
+          <tr><td><span class="badge badge-get">GET</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/members/my</code></td><td>✅</td><td>내 정보 조회</td></tr>
+          <tr><td><span class="badge badge-put">PUT</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/members/my</code></td><td>✅</td><td>내 정보 수정</td></tr>
+          <tr><td><span class="badge badge-del">DEL</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/members/my</code></td><td>✅</td><td>회원 탈퇴</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:10px;">게시판 (Board)</p>
+      <table class="data-table" style="margin-bottom:20px">
+        <thead><tr><th>Method</th><th>URL</th><th>인증</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge badge-get">GET</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/boards?page=0&size=10</code></td><td>—</td><td>전체 게시글 (페이징)</td></tr>
+          <tr><td><span class="badge badge-get">GET</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/boards/{boardId}</code></td><td>—</td><td>게시글 상세</td></tr>
+          <tr><td><span class="badge badge-get">GET</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/boards/my</code></td><td>✅</td><td>내 게시글</td></tr>
+          <tr><td><span class="badge badge-get">GET</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/boards/search?keyword=</code></td><td>—</td><td>키워드 검색</td></tr>
+          <tr><td><span class="badge badge-post">POST</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/boards</code></td><td>✅</td><td>게시글 등록</td></tr>
+          <tr><td><span class="badge badge-put">PUT</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/boards/{boardId}</code></td><td>✅</td><td>게시글 수정 (작성자/관리자)</td></tr>
+          <tr><td><span class="badge badge-del">DEL</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/boards/{boardId}</code></td><td>✅</td><td>게시글 삭제</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:10px;">데이트 신청 (DateRequest)</p>
+      <table class="data-table" style="margin-bottom:20px">
+        <thead><tr><th>Method</th><th>URL</th><th>인증</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge badge-post">POST</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/boards/{boardId}/date-requests</code></td><td>✅</td><td>데이트 신청</td></tr>
+          <tr><td><span class="badge badge-get">GET</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/date-requests/received</code></td><td>✅</td><td>받은 신청 전체</td></tr>
+          <tr><td><span class="badge badge-get">GET</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/date-requests/sent</code></td><td>✅</td><td>보낸 신청 전체</td></tr>
+          <tr><td><span class="badge badge-put">PUT</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/date-requests/{id}/accept</code></td><td>✅</td><td>신청 수락 (경쟁 신청 자동 거절)</td></tr>
+          <tr><td><span class="badge badge-put">PUT</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/date-requests/{id}/reject</code></td><td>✅</td><td>신청 거절</td></tr>
+          <tr><td><span class="badge badge-del">DEL</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/date-requests/{id}</code></td><td>✅</td><td>신청 취소</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:10px;">장소 (Place)</p>
+      <table class="data-table">
+        <thead><tr><th>Method</th><th>URL</th><th>인증</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge badge-get">GET</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/places</code></td><td>—</td><td>전체 장소</td></tr>
+          <tr><td><span class="badge badge-get">GET</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/places/search?keyword=</code></td><td>—</td><td>장소 검색</td></tr>
+          <tr><td><span class="badge badge-post">POST</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/places</code></td><td>🔒 ADMIN</td><td>장소 등록</td></tr>
+          <tr><td><span class="badge badge-put">PUT</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/places/{placeId}</code></td><td>🔒 ADMIN</td><td>장소 수정</td></tr>
+          <tr><td><span class="badge badge-del">DEL</span></td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/places/{placeId}</code></td><td>🔒 ADMIN</td><td>장소 삭제</td></tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:16px;padding:14px 16px;background:rgba(0,0,0,0.03);border-radius:12px;font-size:12px;color:var(--gray-1);line-height:1.8;">
+        응답 형식: JSON &nbsp;·&nbsp; 인증 헤더: <code style="font-family:JetBrains Mono,monospace">Authorization: Bearer {token}</code> &nbsp;·&nbsp; 성공 코드: 200 / 201 / 204 &nbsp;·&nbsp; 로그인: <code style="font-family:JetBrains Mono,monospace">application/x-www-form-urlencoded</code>
+      </div>
+    </div>
+
+    <!-- 7. 프로젝트 구조 -->
+    <div class="card anim" style="animation-delay:0.22s">
+      <div class="section-title">7. 프로젝트 구조 — 계층 구조</div>
+      <table class="data-table">
+        <thead><tr><th>레이어</th><th>역할</th></tr></thead>
+        <tbody>
+          <tr><td>Controller</td><td>HTTP 요청/응답 처리, 인증 정보 추출</td></tr>
+          <tr><td>Service</td><td>비즈니스 로직, 권한 검증</td></tr>
+          <tr><td>Repository</td><td>Spring Data JPA 쿼리</td></tr>
+          <tr><td>Domain</td><td>JPA 엔티티 정의</td></tr>
+          <tr><td>DTO</td><td>요청/응답 데이터 분리</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 8. 회원 인증 및 인가 -->
+    <div class="card anim" style="animation-delay:0.23s">
+      <div class="section-title">8. 회원 인증 및 인가</div>
+
+      <div class="two-col" style="margin-bottom:20px">
+        <div>
+          <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:10px;">회원가입 흐름</p>
+          <table class="data-table">
+            <tbody>
+              <tr><td style="color:var(--gray-1);width:60px">요청</td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">POST /members</code> — id, pwd, name, email</td></tr>
+              <tr><td style="color:var(--gray-1)">처리</td><td>BCryptPasswordEncoder로 비밀번호 암호화 후 저장</td></tr>
+              <tr><td style="color:var(--gray-1)">권한</td><td>ROLE_USER 기본 부여</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:10px;">로그인 흐름</p>
+          <table class="data-table">
+            <tbody>
+              <tr><td style="color:var(--gray-1);width:60px">형식</td><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">application/x-www-form-urlencoded</code></td></tr>
+              <tr><td style="color:var(--gray-1)">처리</td><td>LoginFilter가 인증 처리 후 JWT 발급</td></tr>
+              <tr><td style="color:var(--gray-1)">응답</td><td>Authorization 헤더 + 회원 정보 바디 반환</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:10px;">JWT 인증 필터</p>
+      <div class="code"><span class="c-comment">// JWTFilter: 요청 → 토큰 추출 → 검증 → SecurityContext 저장</span>
+<span class="c-kw">protected void</span> <span class="c-fn">doFilterInternal</span>(<span class="c-type">HttpServletRequest</span> request, ...) {
+    <span class="c-type">String</span> token = request.<span class="c-fn">getHeader</span>(<span class="c-str">"Authorization"</span>).<span class="c-fn">substring</span>(<span class="c-str">"Bearer "</span>.length());
+
+    <span class="c-kw">if</span> (jwtUtil.<span class="c-fn">isExpired</span>(token)) {
+        filterChain.<span class="c-fn">doFilter</span>(request, response); <span class="c-comment">// 비인증 상태로 진행 → 인증 필요 경로에서 403</span>
+        <span class="c-kw">return</span>;
+    }
+    <span class="c-type">CustomMemberDetails</span> userDetails = <span class="c-kw">new</span> <span class="c-type">CustomMemberDetails</span>(...);
+    <span class="c-type">SecurityContextHolder</span>.<span class="c-fn">getContext</span>().<span class="c-fn">setAuthentication</span>(
+        <span class="c-kw">new</span> <span class="c-type">UsernamePasswordAuthenticationToken</span>(userDetails, <span class="c-kw">null</span>, userDetails.<span class="c-fn">getAuthorities</span>())
+    );
+}</div>
+
+      <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin:16px 0 10px">URL 권한 처리</p>
+      <table class="data-table">
+        <thead><tr><th>URL 패턴</th><th>권한</th></tr></thead>
+        <tbody>
+          <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">POST /members, GET /members/check</code></td><td>전체 허용</td></tr>
+          <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">GET /boards/**, GET /places/**</code></td><td>전체 허용</td></tr>
+          <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">GET /images/**</code></td><td>전체 허용</td></tr>
+          <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">POST/PUT/DELETE /places/**</code></td><td>ROLE_ADMIN</td></tr>
+          <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">/admin/**</code></td><td>ROLE_ADMIN</td></tr>
+          <tr><td>그 외</td><td>로그인 필요</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 9. 핵심 비즈니스 기능 -->
+    <div class="card anim" style="animation-delay:0.24s">
+      <div class="section-title">9. 핵심 비즈니스 기능 구현</div>
+
+      <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:10px;">CRUD 기능</p>
+      <table class="data-table" style="margin-bottom:20px">
+        <thead><tr><th>기능</th><th>구현 내용</th></tr></thead>
+        <tbody>
+          <tr><td>게시글</td><td>작성 시 장소 연결 필수. 수정·삭제는 작성자 본인 또는 관리자만 가능 (Service에서 memberNo 비교)</td></tr>
+          <tr><td>데이트 신청</td><td>PENDING → ACCEPTED/REJECTED 상태 전이 관리. 수락 시 동일 게시글의 다른 PENDING 신청 자동 REJECTED 처리</td></tr>
+          <tr><td>장소</td><td>관리자 전용 CRUD. 게시글에서 외래키로 참조</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:10px;">검색 및 페이징</p>
+      <table class="data-table">
+        <thead><tr><th>기능</th><th>구현 내용</th></tr></thead>
+        <tbody>
+          <tr><td>게시글 검색</td><td>제목 + 내용 키워드 검색 (LIKE %keyword%)</td></tr>
+          <tr><td>장소 검색</td><td>장소명 키워드 검색</td></tr>
+          <tr><td>페이징</td><td>Spring Data JPA <code style="font-family:JetBrains Mono,monospace;font-size:11px">Page&lt;T&gt;</code> + Pageable. <code style="font-family:JetBrains Mono,monospace;font-size:11px">GET /boards?page=0&size=10</code></td></tr>
+          <tr><td>프론트엔드 응답</td><td>content, totalPages, totalElements 활용</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 10. JPA 활용 -->
+    <div class="card anim" style="animation-delay:0.25s">
+      <div class="section-title">10. JPA 활용</div>
+
+      <div class="two-col" style="margin-bottom:20px">
+        <div>
+          <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:10px;">엔티티 설계</p>
+          <table class="data-table">
+            <thead><tr><th>어노테이션</th><th>용도</th></tr></thead>
+            <tbody>
+              <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">@CreationTimestamp</code></td><td>등록일 자동 저장</td></tr>
+              <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">@UpdateTimestamp</code></td><td>수정일 자동 갱신</td></tr>
+              <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">@GeneratedValue(IDENTITY)</code></td><td>MySQL AUTO_INCREMENT 활용</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:10px;">연관관계 매핑</p>
+          <div class="rel-grid">
+            <div class="rel-item"><div class="rel-name">Member (1) : Board (N)</div><div class="rel-desc">회원이 여러 게시글 작성</div></div>
+            <div class="rel-item"><div class="rel-name">Place (1) : Board (N)</div><div class="rel-desc">장소에 여러 게시글 연결</div></div>
+            <div class="rel-item"><div class="rel-name">Board (1) : DateRequest (N)</div><div class="rel-desc">게시글에 여러 신청 수신</div></div>
+            <div class="rel-item"><div class="rel-name">Member (1) : DateRequest (N)</div><div class="rel-desc">회원이 여러 신청 발송</div></div>
+          </div>
+          <p style="font-size:12px;color:var(--gray-1);margin-top:10px;">모든 연관관계 <code style="font-family:JetBrains Mono,monospace;font-size:11px">@ManyToOne(fetch = FetchType.LAZY)</code> — N+1 방지</p>
+        </div>
+      </div>
+
+      <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:10px;">Lazy Loading 전략 & Query Method</p>
+      <div class="code"><span class="c-comment">// N+1 방지: JOIN FETCH + countQuery 분리</span>
+<span class="c-anno">@Query</span>(value = <span class="c-str">"SELECT b FROM Board b JOIN FETCH b.member JOIN FETCH b.place"</span>,
+       countQuery = <span class="c-str">"SELECT COUNT(b) FROM Board b"</span>)
+<span class="c-type">Page</span>&lt;<span class="c-type">Board</span>&gt; <span class="c-fn">findAllWithMemberAndPlace</span>(<span class="c-type">Pageable</span> pageable);
+
+<span class="c-type">List</span>&lt;<span class="c-type">Board</span>&gt; <span class="c-fn">findByMember_MemberNoOrderByBoardIdDesc</span>(<span class="c-type">Long</span> memberNo);
+<span class="c-type">List</span>&lt;<span class="c-type">Board</span>&gt; <span class="c-fn">findByTitleContainingOrContentContaining</span>(<span class="c-type">String</span> t, <span class="c-type">String</span> c);</div>
+    </div>
+
+    <!-- 11. 테스트 -->
+    <div class="card anim" style="animation-delay:0.26s">
+      <div class="section-title">11. 테스트</div>
+      <p style="font-size:14px;line-height:1.8;margin-bottom:14px;">Postman을 활용한 수동 API 테스트. 로그인 → 토큰 발급 → 인증 필요 API 순서로 시나리오 테스트 진행.</p>
+      <div class="spec-list">
+        <div class="spec-item"><div class="spec-dot"></div><span>미인증 상태에서 게시글 작성 시 403 반환 확인</span></div>
+        <div class="spec-item"><div class="spec-dot"></div><span>타인 게시글 삭제 시도 시 예외 확인</span></div>
+        <div class="spec-item"><div class="spec-dot"></div><span>데이트 신청 수락 시 다른 신청 자동 거절 확인</span></div>
+      </div>
+      <p style="font-size:13px;color:var(--gray-1);margin-top:14px;">별도 Swagger 미적용. Postman Collection + 엑셀 파일로 API 명세 관리.</p>
+    </div>
+
+    <!-- 12. Docker & 배포 -->
+    <div class="card anim" style="animation-delay:0.27s">
+      <div class="section-title">12. Docker & 배포</div>
+
+      <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:12px;">docker-compose.yml 구성</p>
+      <div class="docker-grid" style="margin-bottom:20px">
+        <div class="docker-item">
+          <div class="docker-svc">SERVICE</div>
+          <div class="docker-name">db</div>
+          <div class="docker-desc">mysql:8.0<br>mysql-data volume — DB 영속성</div>
+        </div>
+        <div class="docker-item">
+          <div class="docker-svc">SERVICE</div>
+          <div class="docker-name">backend</div>
+          <div class="docker-desc">Spring Boot :8087<br>upload-images volume — 이미지 영속성</div>
+        </div>
+        <div class="docker-item">
+          <div class="docker-svc">SERVICE</div>
+          <div class="docker-name">frontend</div>
+          <div class="docker-desc">Nginx + React 정적 서빙 :80<br>리버스 프록시</div>
+        </div>
+      </div>
+
+      <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:12px;">Dockerfile — 백엔드</p>
+      <div class="code">FROM eclipse-temurin:21-jdk
+WORKDIR /app
+COPY target/*-SNAPSHOT.jar app.jar
+ENTRYPOINT ["java", "-Duser.timezone=Asia/Seoul", "-Dfile.encoding=UTF-8", "-jar", "app.jar"]</div>
+
+      <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin:16px 0 12px">Dockerfile — 프론트엔드 (Multi-stage)</p>
+      <div class="code">FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM nginx:alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf</div>
+
+      <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin:16px 0 12px">GitHub Actions 배포 흐름</p>
+      <div class="cicd-flow">
+        <span class="cicd-step">git push</span>
+        <span class="cicd-arrow">→</span>
+        <span class="cicd-step">Actions 트리거</span>
+        <span class="cicd-arrow">→</span>
+        <span class="cicd-step">Maven Build</span>
+        <span class="cicd-arrow">→</span>
+        <span class="cicd-step">Docker Hub Push</span>
+        <span class="cicd-arrow">→</span>
+        <span class="cicd-step">EC2 SSH</span>
+        <span class="cicd-arrow">→</span>
+        <span class="cicd-step">docker compose up</span>
+      </div>
+
+      <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin:16px 0 10px">환경 분리</p>
+      <table class="data-table">
+        <thead><tr><th>파일</th><th>용도</th></tr></thead>
+        <tbody>
+          <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">application.properties</code></td><td>공통 설정</td></tr>
+          <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">application-dev.properties</code></td><td>로컬 개발 (localhost DB)</td></tr>
+          <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">application-prod.properties</code></td><td>운영 환경 (환경변수로 민감정보 주입)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 15. 트러블슈팅 -->
+    <div class="card anim" style="animation-delay:0.28s">
+      <div class="section-title">15. 트러블슈팅</div>
+      <div class="trouble-list">
+        <div class="trouble-item">
+          <div class="trouble-title">N+1 문제 — 게시글 목록 조회 시 쿼리 폭발</div>
+          <div class="trouble-row"><span class="trouble-key">원인</span><span>LAZY 로딩 상태에서 게시글 목록 조회 시 Member, Place를 각각 추가 쿼리로 로딩</span></div>
+          <div class="trouble-row"><span class="trouble-key">해결</span><span>JOIN FETCH 쿼리로 한 번에 로딩 + 페이징 COUNT 쿼리를 countQuery로 분리해 불필요한 JOIN 방지</span></div>
+          <div class="trouble-row"><span class="trouble-key">교훈</span><span>연관관계 조회가 많은 API는 초기 설계 단계에서 Fetch 전략을 함께 고려해야 함</span></div>
+        </div>
+        <div class="trouble-item">
+          <div class="trouble-title">Mac(NFD) ↔ Linux(NFC) 유니코드 정규화 불일치</div>
+          <div class="trouble-row"><span class="trouble-key">원인</span><span>한글 파일명이 macOS(NFD)에서 정상 업로드 → Linux EC2(NFC) 환경에서 파일 참조 실패</span></div>
+          <div class="trouble-row"><span class="trouble-key">해결</span><span>업로드 시 파일명을 UUID로 변환해 인코딩 차이를 원천 차단</span></div>
+          <div class="trouble-row"><span class="trouble-key">교훈</span><span>개발 환경(Mac)과 운영 환경(Linux)의 파일시스템 차이를 항상 고려해야 함</span></div>
+        </div>
+        <div class="trouble-item">
+          <div class="trouble-title">컨테이너 재시작 시 업로드 이미지 소실</div>
+          <div class="trouble-row"><span class="trouble-key">원인</span><span>업로드 이미지가 컨테이너 내부 파일시스템에만 저장되어 재시작 시 데이터 소실</span></div>
+          <div class="trouble-row"><span class="trouble-key">해결</span><span>docker-compose에 Named Volume(upload-images) 마운트로 호스트에 영속성 확보</span></div>
+          <div class="trouble-row"><span class="trouble-key">교훈</span><span>컨테이너는 Stateless — 영속 데이터는 반드시 Volume으로 분리해야 함</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 16. 프로젝트 회고 -->
+    <div class="card anim" style="animation-delay:0.29s">
+      <div class="section-title">16. 프로젝트 회고</div>
+
+      <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:12px;">배운 점</p>
+      <div class="log-list" style="margin-bottom:20px">
+        <div class="log-item"><span class="log-tag">LOG[01]</span><span class="log-text">Spring Security 6의 필터 체인 구조와 JWT 인증 흐름을 직접 구현하며 인증/인가의 동작 원리를 이해</span></div>
+        <div class="log-item"><span class="log-tag">LOG[02]</span><span class="log-text">JPA 연관관계 설계 및 Lazy Loading, N+1 문제 해결 과정에서 ORM 동작 방식을 실제로 체감</span></div>
+        <div class="log-item"><span class="log-tag">LOG[03]</span><span class="log-text">Docker Compose 멀티 컨테이너 환경 구성 + GitHub Actions로 자동 배포 파이프라인 구축</span></div>
+        <div class="log-item"><span class="log-tag">LOG[04]</span><span class="log-text">개발 환경(Mac)과 운영 환경(Linux)의 파일시스템 차이(유니코드 정규화)를 실제 트러블슈팅으로 학습</span></div>
+      </div>
+
+      <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:12px;">개선할 점</p>
+      <div class="spec-list" style="margin-bottom:20px">
+        <div class="spec-item"><div class="spec-dot"></div><span>Swagger(springdoc-openapi) 적용으로 API 문서 자동화</span></div>
+        <div class="spec-item"><div class="spec-dot"></div><span>JWT 리프레시 토큰 도입으로 보안 강화 및 자동 로그인 구현</span></div>
+        <div class="spec-item"><div class="spec-dot"></div><span>단위 테스트 / 통합 테스트 코드 작성</span></div>
+        <div class="spec-item"><div class="spec-dot"></div><span>현재 EC2 단일 인스턴스 구성 → Backend / Frontend EC2 서버 분리</span></div>
+      </div>
+
+      <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:12px;">향후 발전 방향</p>
+      <div class="plan-list">
+        <div class="plan-item"><span class="plan-tag">UPDATE[V2.0]</span><span class="plan-text"><b>게시글 이미지 첨부</b> — 게시글에 직접 이미지를 첨부해 장소 분위기를 더 풍부하게 전달</span></div>
+        <div class="plan-item"><span class="plan-tag">UPDATE[V2.1]</span><span class="plan-text"><b>매칭 후 채팅</b> — 데이트 신청 수락 이후 WebSocket 기반 실시간 채팅 + SSE 알림 기능</span></div>
+        <div class="plan-item"><span class="plan-tag">UPDATE[V2.2]</span><span class="plan-text"><b>프로필 공개 설정</b> — 원하는 상대에게만 프로필 공개 / 비공개 선택 기능</span></div>
+        <div class="plan-item"><span class="plan-tag">UPDATE[V2.3]</span><span class="plan-text"><b>반응형 UI</b> — 모바일에서도 앱처럼 사용할 수 있도록 반응형 레이아웃 적용</span></div>
+      </div>
+    </div>
+
+    <!-- GitHub 링크 -->
+    <a href="https://lov3.n-e.kr/" target="_blank" class="card anim" style="animation-delay:0.3s;display:flex;justify-content:space-between;align-items:center;text-decoration:none;color:inherit;background:#1c1c1e;">
+      <div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:6px;font-weight:600;letter-spacing:1px;">DEPLOYED SERVICE</div>
+        <div style="font-size:20px;font-weight:800;color:white;">lov3.n-e.kr</div>
+      </div>
+      <span style="font-size:28px;opacity:0.3;color:white;">↗</span>
+    </a>
+
+  </main>
+</div>
+</body>
+</html>
