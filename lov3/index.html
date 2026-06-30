@@ -398,26 +398,43 @@ body { font-family:"Inter",sans-serif; background:#ebebed; color:var(--black); m
               <thead><tr><th>컬럼</th><th>타입</th><th>설명</th></tr></thead>
               <tbody>
                 <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">board_id</code></td><td>BIGINT (PK)</td><td>게시글 번호</td></tr>
-                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">title, content</code></td><td>VARCHAR</td><td>제목, 내용</td></tr>
+                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">title</code></td><td>VARCHAR(100)</td><td>제목</td></tr>
+                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">content</code></td><td>VARCHAR(2000)</td><td>내용</td></tr>
+                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">view_count</code></td><td>INT</td><td>조회수</td></tr>
                 <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">member_no</code></td><td>BIGINT (FK)</td><td>작성자</td></tr>
                 <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">place_id</code></td><td>BIGINT (FK)</td><td>연결 장소</td></tr>
-                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">view_count, reg_date, update_date</code></td><td>—</td><td>메타정보</td></tr>
+                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">reg_date, update_date</code></td><td>DATETIME</td><td>작성일, 수정일</td></tr>
               </tbody>
             </table>
           </div>
           <div>
-            <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:10px;">date_request</p>
+            <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:10px;">place</p>
             <table class="data-table">
               <thead><tr><th>컬럼</th><th>타입</th><th>설명</th></tr></thead>
               <tbody>
-                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">request_id</code></td><td>BIGINT (PK)</td><td>신청 번호</td></tr>
-                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">status</code></td><td>VARCHAR(20)</td><td>PENDING / ACCEPTED / REJECTED</td></tr>
-                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">message</code></td><td>VARCHAR(500)</td><td>신청 메시지</td></tr>
-                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">board_id</code></td><td>BIGINT (FK)</td><td>대상 게시글</td></tr>
-                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">sender_no</code></td><td>BIGINT (FK)</td><td>신청자</td></tr>
+                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">place_id</code></td><td>BIGINT (PK)</td><td>장소 번호</td></tr>
+                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">place_name</code></td><td>VARCHAR(100)</td><td>장소명</td></tr>
+                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">place_img</code></td><td>VARCHAR(255)</td><td>장소 이미지 경로</td></tr>
+                <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">place_info</code></td><td>VARCHAR(500)</td><td>장소 설명</td></tr>
               </tbody>
             </table>
           </div>
+        </div>
+
+        <div>
+          <p style="font-size:12px;font-weight:700;color:var(--gray-1);letter-spacing:0.5px;margin-bottom:10px;">date_request</p>
+          <table class="data-table">
+            <thead><tr><th>컬럼</th><th>타입</th><th>설명</th></tr></thead>
+            <tbody>
+              <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">request_id</code></td><td>BIGINT (PK)</td><td>신청 번호</td></tr>
+              <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">message</code></td><td>VARCHAR(500)</td><td>신청 메시지</td></tr>
+              <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">status</code></td><td>VARCHAR(20)</td><td>PENDING / ACCEPTED / REJECTED</td></tr>
+              <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">board_id</code></td><td>BIGINT (FK)</td><td>대상 게시글</td></tr>
+              <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">sender_no</code></td><td>BIGINT (FK)</td><td>신청자</td></tr>
+              <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">reg_date</code></td><td>DATETIME</td><td>신청일</td></tr>
+              <tr><td><code style="font-family:JetBrains Mono,monospace;font-size:11px">update_date</code></td><td>DATETIME</td><td>상태 변경일</td></tr>
+            </tbody>
+          </table>
         </div>
 
       </div>
